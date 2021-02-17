@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+  parent-aps-php:
+    build:
+      context: ../php
+      dockerfile: Dockerfile
+      args:
+        CONTAINER_USER: ${CONTAINER_USER:?err}
+        CONTAINER_USER_ID: ${CONTAINER_USER_ID:?err}
+    container_name: parent-aps-php
+    hostname: parent-aps-php
+    networks:
+      - parent-aps-network
+    expose:
+      - 9000
+    restart: unless-stopped
+    environment:
+      - TERM=xterm
+      - APACHE_LOG_DIR=/var/log/apache2/
+      - APACHE_RUN_USER=${CONTAINER_USER}
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
+      - PROJECT_PATH=/var/www/public
+    working_dir: /var/www
+    volumes:
+      - ${PROJECT_PATH}:/var/www
+      - ../../data/php/apache2/log:/var/log/apache2
+      - ../php/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+
+networks:
+  parent-aps-network:
+    external:
+      name: parent-aps-network
+

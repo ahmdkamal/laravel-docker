@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  parent-aps-proxy:
+    image: jwilder/nginx-proxy
+    container_name: parent-aps-proxy
+    restart: always
+    hostname: parent-aps-proxy
+    networks:
+      - parent-aps-network
+    ports:
+      - ${PROXY_PORT}:80
+    volumes:
+      - ./custom.conf:/etc/nginx/conf.d/custom.conf
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+networks:
+  parent-aps-network:
+    name: parent-aps-network
+    driver: bridge

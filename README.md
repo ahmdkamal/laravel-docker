@@ -7,3 +7,5 @@
     - cp .env.example to be .env change the data to yours
     - cd to /etc/hosts on your machine and add `VIRTUAL_HOST`, the one you added in .env then restart your apache
     - run `docker-compose up -d`
+
+- go to code folder and read the README

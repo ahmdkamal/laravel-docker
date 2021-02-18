@@ -6,11 +6,11 @@ use JsonStreamingParser\Listener\GeoJsonListener;
 use JsonStreamingParser\Parser;
 use Illuminate\Support\Arr;
 
-class DataProviderY extends DataProviderAbstract
+class DataProviderYTest extends DataProviderAbstract
 {
     public function __construct()
     {
-        $this->providerPath = storage_path('app/providers/DataProviderY.json');
+        $this->providerPath = storage_path('app/providers/DataProviderYTest.json');
         $this->statusCodes = [
             'authorised' => 100,
             'decline' => 200,

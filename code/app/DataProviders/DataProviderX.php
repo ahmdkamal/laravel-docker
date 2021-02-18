@@ -2,7 +2,7 @@
 
 namespace App\DataProviders;
 
-use JsonStreamingParser\Listener\SimpleObjectQueueListener;
+use JsonStreamingParser\Listener\GeoJsonListener;
 use JsonStreamingParser\Parser;
 use Illuminate\Support\Arr;
 
@@ -23,14 +23,17 @@ class DataProviderX extends DataProviderAbstract
 
     public function search(array $filters = []): array
     {
-        $listener = new SimpleObjectQueueListener(function ($user) use ($filters): void {
+        $listener = new GeoJsonListener(function ($user) use($filters) : void {
+            $user = (object)$user;
             if ($this->applyFilters($user, $filters)) {
                 $this->users[] = $this->dataReturned($user);
             }
-        }, 2);
+        });
 
-        $parser = new Parser(fopen($this->providerPath, 'r'), $listener);
+        $fp = fopen($this->providerPath, 'r');
+        $parser = new Parser($fp, $listener);
         $parser->parse();
+        fclose($fp);
 
         return $this->users;
     }

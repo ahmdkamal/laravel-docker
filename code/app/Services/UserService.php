@@ -8,7 +8,7 @@ use \Illuminate\Http\Request;
 
 class UserService
 {
-    const PROVIDERS = [
+    protected $providers = [
         'DataProviderX' => DataProviderX::class,
         'DataProviderY' => DataProviderY::class,
     ];
@@ -19,11 +19,11 @@ class UserService
         $filters = $request->all();
 
         if ($request->provider !== null) {
-            $provider = new (self::PROVIDERS[$request->provider]);
+            $provider = new ($this->providers[$request->provider]);
             $users = $provider->search($filters);
         } else {
-            foreach (self::PROVIDERS as $PROVIDER) {
-                $provider = new ($PROVIDER);
+            foreach ($this->providers as $provider) {
+                $provider = new ($provider);
                 $users = array_merge($users, $provider->search($filters));
             }
         }
